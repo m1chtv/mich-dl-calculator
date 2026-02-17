@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes"
+    />
+    <title>✨ mich · 3-in-1 download calculator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(145deg, #0b0e14 0%, #1a1f2a 100%);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        color: #eef2fb;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .generator-card {
+        background: rgba(18, 24, 33, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(74, 144, 226, 0.25);
+        border-radius: 48px 48px 40px 40px;
+        padding: 2.2rem 2rem;
+        box-shadow:
+          0 20px 40px -12px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      }
+
+      .top-badge {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.2rem;
+        flex-wrap: wrap;
+      }
+
+      .title-group {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      .title-group i {
+        font-size: 2.2rem;
+        color: #7b9fff;
+        filter: drop-shadow(0 0 6px #4d7aff88);
+      }
+
+      h1 {
+        font-weight: 650;
+        font-size: 1.9rem;
+        letter-spacing: -0.01em;
+        background: linear-gradient(120deg, #f0f9ff, #c7e2ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .mode-badge {
+        background: #1e2b3c;
+        padding: 0.4rem 1.4rem;
+        border-radius: 100px;
+        border: 1px solid #7b9fff60;
+        color: #c7e2ff;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .mode-selector {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .mode-btn {
+        background: #111c26;
+        border: 2px solid #2f4a6b;
+        border-radius: 40px;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #c7e2ff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.15s;
+        flex: 1;
+        min-width: 200px;
+        justify-content: center;
+      }
+
+      .mode-btn i {
+        font-size: 1.4rem;
+        color: #7b9fff;
+      }
+
+      .mode-btn.active {
+        background: #1f2b4a;
+        border-color: #7b9fff;
+        color: white;
+        box-shadow: 0 0 15px #7b9fff70;
+      }
+
+      .mode-btn:hover {
+        background: #1a2c3a;
+        border-color: #7b9fff;
+      }
+
+      .result-hero {
+        background: #0c111b;
+        border-radius: 28px;
+        padding: 0.2rem;
+        border: 1px solid #7b9fff;
+        box-shadow: 0 8px 0 #06080c;
+        margin-bottom: 2rem;
+      }
+
+      .result-screen {
+        background: #0b0f16;
+        border-radius: 28px;
+        padding: 2rem;
+        border-bottom: 1px solid #7b9fff;
+      }
+
+      .result-box {
+        text-align: center;
+      }
+
+      .result-number {
+        font-size: 4rem;
+        font-weight: 700;
+        color: #7b9fff;
+        text-shadow: 0 0 20px #7b9fff88;
+        line-height: 1.2;
+        font-family: "SF Mono", monospace;
+      }
+
+      .result-label {
+        font-size: 1.5rem;
+        color: #c7e2ff;
+        margin-top: 0.5rem;
+      }
+
+      .result-description {
+        color: #93b6c9;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+
+      .input-panel {
+        background: rgba(12, 22, 32, 0.6);
+        border-radius: 28px;
+        padding: 1.8rem 1.9rem;
+        margin-bottom: 1.8rem;
+        border: 1px solid #7b9fff;
+        backdrop-filter: blur(10px);
+      }
+
+      .section-label {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 600;
+        margin-bottom: 1.4rem;
+        color: #c7e2ff;
+        font-size: 1.1rem;
+      }
+
+      .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .input-group {
+        background: #111c26;
+        border-radius: 20px;
+        padding: 1.2rem;
+        border: 1px solid #7b9fff;
+      }
+
+      .input-label {
+        color: #c7e2ff;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .input-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .input-field {
+        flex: 1;
+        background: #0b0f16;
+        border: 1px solid #7b9fff;
+        border-radius: 15px;
+        padding: 0.8rem 1rem;
+        color: #ffefd1;
+        font-size: 1.2rem;
+        font-family: "SF Mono", monospace;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: #9fb9ff;
+        box-shadow: 0 0 10px #7b9fff88;
+      }
+
+      .unit-select {
+        background: #0b0f16;
+        border: 1px solid #7b9fff;
+        border-radius: 15px;
+        padding: 0.8rem;
+        color: #ffefd1;
+        cursor: pointer;
+      }
+
+      .presets {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+
+      .preset-btn {
+        background: #111c26;
+        border: 1px solid #7b9fff;
+        border-radius: 30px;
+        padding: 0.5rem 1.2rem;
+        color: #c7e2ff;
+        cursor: pointer;
+        transition: 0.15s;
+        font-size: 0.9rem;
+      }
+
+      .preset-btn:hover {
+        background: #1f2b4a;
+        border-color: #9fb9ff;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.8rem;
+        justify-content: flex-end;
+        margin: 1rem 0;
+      }
+
+      .icon-btn {
+        background: #1d2a36;
+        border: none;
+        color: #c7e2ff;
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: 0.16s;
+        border: 1px solid #7b9fff;
+        box-shadow: 0 5px 0 #0e141c;
+      }
+
+      .icon-btn:hover {
+        background: #1f2b4a;
+        color: white;
+        border-color: #9fb9ff;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 0 #0e141c;
+      }
+
+      .icon-btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 #0e141c;
+      }
+
+      .icon-btn.large {
+        width: auto;
+        padding: 0 2rem;
+        gap: 0.5rem;
+      }
+
+      .history-area {
+        background: rgba(5, 13, 19, 0.7);
+        border-radius: 24px;
+        padding: 1.4rem 1.7rem;
+        backdrop-filter: blur(8px);
+        border: 1px solid #7b9fff;
+      }
+
+      .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .history-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        max-height: 110px;
+        overflow-y: auto;
+      }
+
+      .history-item {
+        background: #0e1d29;
+        border-radius: 18px;
+        padding: 0.55rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.9rem;
+        border-left: 4px solid #7b9fff;
+        color: #c7e2ff;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        cursor: pointer;
+      }
+
+      .history-item:hover {
+        background: #1a2d3a;
+      }
+
+      .clear-history {
+        background: none;
+        border: 1px solid #7b9fff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 30px;
+        color: #c7e2ff;
+        cursor: pointer;
+      }
+
+      .footnote {
+        margin-top: 1.2rem;
+        text-align: center;
+        color: #93b6c9;
+        font-size: 0.75rem;
+      }
+
+      @media (max-width: 550px) {
+        .generator-card {
+          padding: 1.5rem;
+        }
+        .result-number {
+          font-size: 2.5rem;
+        }
+        .mode-btn {
+          min-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="generator-card">
+        <div class="top-badge">
+          <div class="title-group">
+            <i class="fas fa-calculator"></i>
+            <h1>calc·mich</h1>
+          </div>
+          <div class="mode-badge">
+            <i class="fas fa-arrows-spin"></i>
+            <span id="currentMode">Time Calculator</span>
+          </div>
+        </div>
+
+        <div class="mode-selector">
+          <div class="mode-btn active" data-mode="time">
+            <i class="fas fa-clock"></i>
+            <span>Time</span>
+            <small style="font-size: 0.8rem; opacity: 0.8"
+              >(speed + space = hours)</small
+            >
+          </div>
+          <div class="mode-btn" data-mode="space">
+            <i class="fas fa-database"></i>
+            <span>Download Space</span>
+            <small style="font-size: 0.8rem; opacity: 0.8"
+              >(speed + time = GB)</small
+            >
+          </div>
+          <div class="mode-btn" data-mode="speed">
+            <i class="fas fa-gauge-high"></i>
+            <span>Download Speed</span>
+            <small style="font-size: 0.8rem; opacity: 0.8"
+              >(space + time = Mbps)</small
+            >
+          </div>
+        </div>
+
+        <div class="result-hero">
+          <div class="result-screen">
+            <div class="result-box">
+              <div class="result-number" id="resultValue">1.0</div>
+              <div class="result-label" id="resultUnit">hours</div>
+              <div class="result-description" id="resultDesc">
+                16 Mbps speed · 7.2 GB file
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-panel">
+          <div class="section-label">
+            <i class="fas fa-sliders"></i> <span>ENTER VALUES</span>
+          </div>
+
+          <div id="timeModeInputs" style="display: block">
+            <div class="input-grid">
+              <div class="input-group">
+                <div class="input-label">
+                  <i class="fas fa-gauge-high"></i> Download Speed
+                </div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="timeSpeed"
+                    class="input-field"
+                    value="16"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="timeSpeedUnit" class="unit-select">
+                    <option value="mbps" selected>Mbps</option>
+                    <option value="gbps">Gbps</option>
+                    <option value="kbps">Kbps</option>
+                    <option value="mbs">MB/s</option>
+                    <option value="gbs">GB/s</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="input-label">
+                  <i class="fas fa-database"></i> File Size
+                </div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="timeSize"
+                    class="input-field"
+                    value="7.2"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="timeSizeUnit" class="unit-select">
+                    <option value="gb" selected>GB</option>
+                    <option value="tb">TB</option>
+                    <option value="mb">MB</option>
+                    <option value="kb">KB</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="presets">
+              <span class="preset-btn" data-time-file="3.6"
+                >HD Movie (3.6 GB)</span
+              >
+              <span class="preset-btn" data-time-file="15"
+                >4K Movie (15 GB)</span
+              >
+              <span class="preset-btn" data-time-file="50">Game (50 GB)</span>
+            </div>
+          </div>
+
+          <div id="spaceModeInputs" style="display: none">
+            <div class="input-grid">
+              <div class="input-group">
+                <div class="input-label">
+                  <i class="fas fa-gauge-high"></i> Download Speed
+                </div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="spaceSpeed"
+                    class="input-field"
+                    value="16"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="spaceSpeedUnit" class="unit-select">
+                    <option value="mbps" selected>Mbps</option>
+                    <option value="gbps">Gbps</option>
+                    <option value="kbps">Kbps</option>
+                    <option value="mbs">MB/s</option>
+                    <option value="gbs">GB/s</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="input-label"><i class="fas fa-clock"></i> Time</div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="spaceTime"
+                    class="input-field"
+                    value="1"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="spaceTimeUnit" class="unit-select">
+                    <option value="hours" selected>Hours</option>
+                    <option value="minutes">Minutes</option>
+                    <option value="seconds">Seconds</option>
+                    <option value="days">Days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="presets">
+              <span class="preset-btn" data-space-time="0.5">30 minutes</span>
+              <span class="preset-btn" data-space-time="1">1 hour</span>
+              <span class="preset-btn" data-space-time="2">2 hours</span>
+              <span class="preset-btn" data-space-time="6">6 hours</span>
+              <span class="preset-btn" data-space-time="24">24 hours</span>
+            </div>
+          </div>
+
+          <div id="speedModeInputs" style="display: none">
+            <div class="input-grid">
+              <div class="input-group">
+                <div class="input-label">
+                  <i class="fas fa-database"></i> File Size
+                </div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="speedSize"
+                    class="input-field"
+                    value="7.2"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="speedSizeUnit" class="unit-select">
+                    <option value="gb" selected>GB</option>
+                    <option value="tb">TB</option>
+                    <option value="mb">MB</option>
+                    <option value="kb">KB</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="input-label"><i class="fas fa-clock"></i> Time</div>
+                <div class="input-row">
+                  <input
+                    type="number"
+                    id="speedTime"
+                    class="input-field"
+                    value="1"
+                    min="0"
+                    step="0.1"
+                  />
+                  <select id="speedTimeUnit" class="unit-select">
+                    <option value="hours" selected>Hours</option>
+                    <option value="minutes">Minutes</option>
+                    <option value="seconds">Seconds</option>
+                    <option value="days">Days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="presets">
+              <span class="preset-btn" data-speed-file="3.6"
+                >HD Movie (3.6 GB)</span
+              >
+              <span class="preset-btn" data-speed-file="15"
+                >4K Movie (15 GB)</span
+              >
+              <span class="preset-btn" data-speed-file="50">Game (50 GB)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="icon-btn large" id="copyBtn">
+            <i class="far fa-copy"></i> Copy Result
+          </button>
+          <button class="icon-btn" id="refreshBtn" title="Reset to example">
+            <i class="fas fa-rotate-left"></i>
+          </button>
+        </div>
+
+        <div class="history-area">
+          <div class="history-header">
+            <span
+              ><i class="fas fa-clock-rotate-left"></i> recent
+              calculations</span
+            >
+            <button class="clear-history" id="clearHistoryBtn">
+              <i class="fas fa-trash-alt"></i> clear
+            </button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+
+        <div class="footnote">
+          <i class="fas fa-sparkles"></i> 3 calculators in 1: Time · Download
+          Space · Download Speed
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const modeBtns = document.querySelectorAll(".mode-btn");
+        const currentMode = document.getElementById("currentMode");
+        const resultValue = document.getElementById("resultValue");
+        const resultUnit = document.getElementById("resultUnit");
+        const resultDesc = document.getElementById("resultDesc");
+
+        const timeInputs = document.getElementById("timeModeInputs");
+        const spaceInputs = document.getElementById("spaceModeInputs");
+        const speedInputs = document.getElementById("speedModeInputs");
+
+        const timeSpeed = document.getElementById("timeSpeed");
+        const timeSpeedUnit = document.getElementById("timeSpeedUnit");
+        const timeSize = document.getElementById("timeSize");
+        const timeSizeUnit = document.getElementById("timeSizeUnit");
+
+        const spaceSpeed = document.getElementById("spaceSpeed");
+        const spaceSpeedUnit = document.getElementById("spaceSpeedUnit");
+        const spaceTime = document.getElementById("spaceTime");
+        const spaceTimeUnit = document.getElementById("spaceTimeUnit");
+
+        const speedSize = document.getElementById("speedSize");
+        const speedSizeUnit = document.getElementById("speedSizeUnit");
+        const speedTime = document.getElementById("speedTime");
+        const speedTimeUnit = document.getElementById("speedTimeUnit");
+
+        const copyBtn = document.getElementById("copyBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+        const historyList = document.getElementById("historyList");
+
+        const presetBtns = document.querySelectorAll(".preset-btn");
+
+        let activeMode = "time";
+        let history = [];
+
+        function convertSpeedToMBps(value, unit) {
+          switch (unit) {
+            case "mbps":
+              return value * 0.125;
+            case "gbps":
+              return value * 125;
+            case "kbps":
+              return value * 0.000125;
+            case "mbs":
+              return value;
+            case "gbs":
+              return value * 1024;
+            default:
+              return value * 0.125;
+          }
+        }
+
+        function convertSizeToMB(value, unit) {
+          switch (unit) {
+            case "mb":
+              return value;
+            case "gb":
+              return value * 1024;
+            case "tb":
+              return value * 1024 * 1024;
+            case "kb":
+              return value / 1024;
+            default:
+              return value * 1024;
+          }
+        }
+
+        function convertTimeToSeconds(value, unit) {
+          switch (unit) {
+            case "seconds":
+              return value;
+            case "minutes":
+              return value * 60;
+            case "hours":
+              return value * 3600;
+            case "days":
+              return value * 86400;
+            default:
+              return value * 3600;
+          }
+        }
+
+        function convertSecondsToTime(seconds) {
+          if (seconds < 60) {
+            return { value: seconds.toFixed(1), unit: "seconds" };
+          } else if (seconds < 3600) {
+            return { value: (seconds / 60).toFixed(1), unit: "minutes" };
+          } else if (seconds < 86400) {
+            return { value: (seconds / 3600).toFixed(1), unit: "hours" };
+          } else {
+            return { value: (seconds / 86400).toFixed(1), unit: "days" };
+          }
+        }
+
+        function convertMBToSize(mb, targetUnit) {
+          switch (targetUnit) {
+            case "mb":
+              return mb;
+            case "gb":
+              return (mb / 1024).toFixed(2);
+            case "tb":
+              return (mb / (1024 * 1024)).toFixed(2);
+            case "kb":
+              return (mb * 1024).toFixed(0);
+            default:
+              return (mb / 1024).toFixed(2);
+          }
+        }
+
+        function convertMBpsToSpeed(mbps, targetUnit) {
+          switch (targetUnit) {
+            case "mbps":
+              return (mbps * 8).toFixed(1);
+            case "gbps":
+              return ((mbps * 8) / 1024).toFixed(2);
+            case "kbps":
+              return (mbps * 8 * 1024).toFixed(0);
+            case "mbs":
+              return mbps.toFixed(1);
+            case "gbs":
+              return (mbps / 1024).toFixed(2);
+            default:
+              return (mbps * 8).toFixed(1);
+          }
+        }
+
+        function calculate() {
+          if (activeMode === "time") {
+            const speedMBps = convertSpeedToMBps(
+              parseFloat(timeSpeed.value) || 0,
+              timeSpeedUnit.value,
+            );
+            const sizeMB = convertSizeToMB(
+              parseFloat(timeSize.value) || 0,
+              timeSizeUnit.value,
+            );
+
+            if (speedMBps === 0) {
+              resultValue.textContent = "∞";
+              resultUnit.textContent = "";
+              resultDesc.textContent = "Speed cannot be zero";
+              return;
+            }
+
+            const seconds = sizeMB / speedMBps;
+            const time = convertSecondsToTime(seconds);
+
+            resultValue.textContent = time.value;
+            resultUnit.textContent = time.unit;
+            resultDesc.textContent = `${timeSpeed.value} ${timeSpeedUnit.options[timeSpeedUnit.selectedIndex].text} · ${timeSize.value} ${timeSizeUnit.options[timeSizeUnit.selectedIndex].text}`;
+
+            addToHistory(
+              `${timeSpeed.value} ${timeSpeedUnit.value} · ${timeSize.value} ${timeSizeUnit.value} = ${time.value} ${time.unit}`,
+            );
+          } else if (activeMode === "space") {
+            const speedMBps = convertSpeedToMBps(
+              parseFloat(spaceSpeed.value) || 0,
+              spaceSpeedUnit.value,
+            );
+            const seconds = convertTimeToSeconds(
+              parseFloat(spaceTime.value) || 0,
+              spaceTimeUnit.value,
+            );
+
+            const totalMB = speedMBps * seconds;
+
+            if (totalMB < 1) {
+              resultValue.textContent = (totalMB * 1024).toFixed(0);
+              resultUnit.textContent = "KB";
+            } else if (totalMB < 1024) {
+              resultValue.textContent = totalMB.toFixed(1);
+              resultUnit.textContent = "MB";
+            } else if (totalMB < 1024 * 1024) {
+              resultValue.textContent = (totalMB / 1024).toFixed(2);
+              resultUnit.textContent = "GB";
+            } else {
+              resultValue.textContent = (totalMB / (1024 * 1024)).toFixed(2);
+              resultUnit.textContent = "TB";
+            }
+
+            resultDesc.textContent = `${spaceSpeed.value} ${spaceSpeedUnit.options[spaceSpeedUnit.selectedIndex].text} · ${spaceTime.value} ${spaceTimeUnit.options[spaceTimeUnit.selectedIndex].text}`;
+
+            addToHistory(
+              `${spaceSpeed.value} ${spaceSpeedUnit.value} · ${spaceTime.value} ${spaceTimeUnit.value} = ${resultValue.textContent} ${resultUnit.textContent}`,
+            );
+          } else if (activeMode === "speed") {
+            const sizeMB = convertSizeToMB(
+              parseFloat(speedSize.value) || 0,
+              speedSizeUnit.value,
+            );
+            const seconds = convertTimeToSeconds(
+              parseFloat(speedTime.value) || 0,
+              speedTimeUnit.value,
+            );
+
+            if (seconds === 0) {
+              resultValue.textContent = "∞";
+              resultUnit.textContent = "";
+              resultDesc.textContent = "Time cannot be zero";
+              return;
+            }
+
+            const speedMBps = sizeMB / seconds;
+
+            if (speedMBps < 0.001) {
+              resultValue.textContent = (speedMBps * 8 * 1024).toFixed(0);
+              resultUnit.textContent = "Kbps";
+            } else if (speedMBps < 1) {
+              resultValue.textContent = (speedMBps * 8).toFixed(1);
+              resultUnit.textContent = "Mbps";
+            } else if (speedMBps < 1024) {
+              resultValue.textContent = speedMBps.toFixed(1);
+              resultUnit.textContent = "MB/s";
+            } else {
+              resultValue.textContent = (speedMBps / 1024).toFixed(2);
+              resultUnit.textContent = "GB/s";
+            }
+
+            resultDesc.textContent = `${speedSize.value} ${speedSizeUnit.options[speedSizeUnit.selectedIndex].text} · ${speedTime.value} ${speedTimeUnit.options[speedTimeUnit.selectedIndex].text}`;
+
+            addToHistory(
+              `${speedSize.value} ${speedSizeUnit.value} · ${speedTime.value} ${speedTimeUnit.value} = ${resultValue.textContent} ${resultUnit.textContent}`,
+            );
+          }
+        }
+
+        function switchMode(mode) {
+          activeMode = mode;
+
+          modeBtns.forEach((btn) => {
+            if (btn.dataset.mode === mode) {
+              btn.classList.add("active");
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+
+          timeInputs.style.display = mode === "time" ? "block" : "none";
+          spaceInputs.style.display = mode === "space" ? "block" : "none";
+          speedInputs.style.display = mode === "speed" ? "block" : "none";
+
+          const modeNames = {
+            time: "Time Calculator",
+            space: "Download Space",
+            speed: "Download Speed",
+          };
+          currentMode.textContent = modeNames[mode];
+
+          calculate();
+        }
+
+        function addToHistory(entry) {
+          if (history[0] === entry) return;
+          history.unshift(entry);
+          if (history.length > 6) history.pop();
+          renderHistory();
+        }
+
+        function renderHistory() {
+          if (history.length === 0) {
+            historyList.innerHTML =
+              '<div style="color:#c7e2ff; padding:0.4rem;">✨ recent calculations</div>';
+            return;
+          }
+
+          let html = "";
+          history.forEach((item, index) => {
+            html += `<div class="history-item" data-index="${index}">
+                    <i class="fas fa-history"></i>
+                    <span>${item}</span>
+                </div>`;
+          });
+          historyList.innerHTML = html;
+        }
+
+        function copyResult() {
+          const text = `${activeMode.toUpperCase()} Calculator\n${resultDesc.textContent}\nResult: ${resultValue.textContent} ${resultUnit.textContent}`;
+          navigator.clipboard.writeText(text).then(() => {
+            resultValue.style.color = "#b5ffb9";
+            setTimeout(() => (resultValue.style.color = ""), 200);
+          });
+        }
+
+        function resetToExample() {
+          switchMode("time");
+          timeSpeed.value = 16;
+          timeSpeedUnit.value = "mbps";
+          timeSize.value = 7.2;
+          timeSizeUnit.value = "gb";
+          calculate();
+        }
+
+        modeBtns.forEach((btn) => {
+          btn.addEventListener("click", () => switchMode(btn.dataset.mode));
+        });
+
+        timeSpeed.addEventListener("input", calculate);
+        timeSpeedUnit.addEventListener("change", calculate);
+        timeSize.addEventListener("input", calculate);
+        timeSizeUnit.addEventListener("change", calculate);
+
+        spaceSpeed.addEventListener("input", calculate);
+        spaceSpeedUnit.addEventListener("change", calculate);
+        spaceTime.addEventListener("input", calculate);
+        spaceTimeUnit.addEventListener("change", calculate);
+
+        speedSize.addEventListener("input", calculate);
+        speedSizeUnit.addEventListener("change", calculate);
+        speedTime.addEventListener("input", calculate);
+        speedTimeUnit.addEventListener("change", calculate);
+
+        presetBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            if (activeMode === "time" && this.dataset.timeFile) {
+              timeSize.value = this.dataset.timeFile;
+              timeSizeUnit.value = "gb";
+              calculate();
+            } else if (activeMode === "space" && this.dataset.spaceTime) {
+              spaceTime.value = this.dataset.spaceTime;
+              spaceTimeUnit.value = "hours";
+              calculate();
+            } else if (activeMode === "speed" && this.dataset.speedFile) {
+              speedSize.value = this.dataset.speedFile;
+              speedSizeUnit.value = "gb";
+              calculate();
+            }
+          });
+        });
+
+        copyBtn.addEventListener("click", copyResult);
+        refreshBtn.addEventListener("click", resetToExample);
+        clearHistoryBtn.addEventListener("click", () => {
+          history = [];
+          renderHistory();
+        });
+
+        resetToExample();
+      })();
+    </script>
+  </body>
+</html>

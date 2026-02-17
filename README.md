@@ -15,7 +15,7 @@ A lightweight, browser-based **file downloader UI** with smart link handling and
 - Vanilla JavaScript
 
 ## Usage
-Open `dl.html`, paste a direct file URL, and start downloading.  
+Open `index.html`, paste a direct file URL, and start downloading.  
 No install. No backend. Works fully client-side.
 
 ## Notes
